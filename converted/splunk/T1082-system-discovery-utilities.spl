@@ -1,0 +1,1 @@
+index=sysmon EventCode=1 (Image="*\\systeminfo.exe" OR Image="*\\hostname.exe" OR Image="*\\whoami.exe") | table _time Image CommandLine ParentImage User
