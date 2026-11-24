@@ -1,0 +1,11 @@
+// T1082 System Discovery Utilities - Sentinel conversion
+// STATUS: NOT TESTED against live data (no Sentinel in this lab).
+// Assumes Sysmon events arrive in the Event table.
+Event
+| where Source == "Microsoft-Windows-Sysmon" and EventID == 1
+| extend Image = extract(@"(?m)^Image: ([^\r\n]+)", 1, RenderedDescription)
+| where Image endswith @"\systeminfo.exe"
+    or Image endswith @"\hostname.exe"
+    or Image endswith @"\whoami.exe"
+| extend CommandLine = extract(@"(?m)^CommandLine: ([^\r\n]+)", 1, RenderedDescription)
+| project TimeGenerated, Computer, Image, CommandLine
