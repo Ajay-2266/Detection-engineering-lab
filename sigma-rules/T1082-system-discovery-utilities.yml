@@ -1,0 +1,25 @@
+title: System Information Discovery via Native Windows Utilities
+id: 7c1f3a52-9b4e-4d6a-8e21-5f0a3c9d1b74
+status: experimental
+description: Detects execution of native Windows utilities commonly used for system and user discovery (T1082). A single execution is common in normal admin activity, so this is a low-severity hunting rule.
+references:
+    - https://attack.mitre.org/techniques/T1082/
+author: Ajay
+date: 2026-11-24
+tags:
+    - attack.discovery
+    - attack.t1082
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\systeminfo.exe'
+            - '\hostname.exe'
+            - '\whoami.exe'
+    condition: selection
+falsepositives:
+    - Administrators and IT scripts
+    - Software inventory tools
+level: low
