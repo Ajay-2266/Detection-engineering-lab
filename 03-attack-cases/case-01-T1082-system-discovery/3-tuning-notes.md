@@ -82,9 +82,21 @@ The tuned search is in 1-detection-net-user.spl.
 
 \- An attacker could rename the program or use PowerShell instead of net.
 
-\- The ParentImage field showed "-" on 3 of 4 net events and I haven't
+\- ParentImage showed "-" on 3 of the 4 net commands run from one cmd.exe
 
-&#x20; explained why yet, so the rule doesn't depend on the parent process
+&#x20; window. Each had ParentProcessId 8664, which matched that cmd.exe, so the
 
-&#x20; except to skip the automatic duplicates.
+&#x20; parent existed and was logged. I don't know why Sysmon left the fields
+
+&#x20; empty. When ParentImage is "-", I fall back to ParentProcessId.
+
+\- The duplicate-skipping part of the rule depends on ParentImage being filled
+
+&#x20; in for net1.exe. It was in all my tests, but if it came back empty, one
+
+&#x20; command would raise two alerts.
+
+\- The Splunk forwarder starts cmd.exe repeatedly in the background, so any
+
+&#x20; future cmd.exe rule needs to exclude it.
 
